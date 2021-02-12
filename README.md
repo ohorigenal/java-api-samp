@@ -72,7 +72,7 @@ docker、minikube(local kubernetes)を利用しての実行は下記に記載し
 
 |key|type|概要|
 |---|---|---|
-|location|int|"新宿"|
+|location|string|"新宿"|
 |date|string|"20200101" 八桁|
 |weather|string|"Sunny Cloudy Rainy Snowy"|
 |comment|string|一言コメント|
