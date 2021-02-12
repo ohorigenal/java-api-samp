@@ -1,28 +1,39 @@
 package com.compass.javaapisamp.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class ExAPIResponse {
     @JsonProperty("consolidated_weather")
-    private final MetaWeather weather;
+    private List<MetaWeather> weather;
     @JsonProperty("title")
-    private final String title;
+    private String title;
     @JsonProperty("timezone")
-    private final String timezone;
+    private String timezone;
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     public static class MetaWeather {
         @JsonProperty("weather_state_name")
-        private final String stateName;
+        private String stateName;
         @JsonProperty("applicable_date")
-        private final String date;
+        private String date;
         @JsonProperty("wind_speed")
-        private final float windSpeed;
+        private double windSpeed;
         @JsonProperty("air_pressure")
-        private final float airPressure;
+        private double airPressure;
         @JsonProperty("humidity")
-        private final int humidity;
+        private int humidity;
     }
 }
