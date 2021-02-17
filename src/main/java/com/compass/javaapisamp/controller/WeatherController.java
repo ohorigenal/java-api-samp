@@ -4,10 +4,22 @@ import com.compass.javaapisamp.model.dto.ExAPIResponse;
 import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.dto.RegisterResponse;
 import com.compass.javaapisamp.model.dto.WeatherResponse;
-import org.springframework.web.bind.annotation.*;
+import com.compass.javaapisamp.service.WeatherService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 public class APIController {
+
+    private final WeatherService weatherService;
 
     @PostMapping("/register")
     public RegisterResponse register(
@@ -24,8 +36,9 @@ public class APIController {
         return null;
     }
 
-    @GetMapping("/get/apidate")
-    public ExAPIResponse getExAPIData() {
-        return null;
+    @GetMapping("/get/apidata")
+    public Mono<ExAPIResponse> getExAPIData() {
+        log.info("apidata endpoint.");
+        return weatherService.getExWeather();
     }
 }
