@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class APIController {
+public class WeatherController {
 
     private final WeatherService weatherService;
 
@@ -30,8 +30,8 @@ public class APIController {
 
     @PostMapping("/get/{locationId}/{date}")
     public WeatherResponse getWeather(
-            @PathVariable(name = "locationId", required = true) int locationId,
-            @PathVariable(name = "date", required = true) String date
+            @PathVariable(name = "locationId") int locationId,
+            @PathVariable(name = "date") String date
     ) {
         return null;
     }
