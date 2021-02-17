@@ -1,3 +1,4 @@
+![push-test](https://github.com/ohorigenal/java-api-samp/workflows/push-test/badge.svg?branch=master)
 
 # Weather API
 天気情報の登録、取得のAPI実装のサンプル。
