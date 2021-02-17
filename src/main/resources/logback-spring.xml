@@ -32,13 +32,13 @@
         <target>System.err</target>
     </appender>
 
-    <springProfile name="dev | prod">
+    <springProfile name="test | dev | prod">
         <root level="INFO">
             <appender-ref ref="STDOUT" />
             <appender-ref ref="STDERR" />
         </root>
     </springProfile>
-    <springProfile name="!dev &amp; !prod">
+    <springProfile name="!test &amp; !dev &amp; !prod">
         <root level="DEBUG">
             <appender-ref ref="STDOUT" />
             <appender-ref ref="STDERR" />
