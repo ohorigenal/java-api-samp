@@ -32,14 +32,13 @@ public class ExAPITest {
     private static MockWebServer mockWebServer;
 
     @BeforeAll
-    public static void setupAll() throws IOException {
-        System.out.println("all");
+    public static void start() throws IOException {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
     }
 
     @AfterAll
-    public static void afterAll() throws IOException {
+    public static void shutdown() throws IOException {
         mockWebServer.shutdown();
     }
 
@@ -100,14 +99,11 @@ public class ExAPITest {
 
     @Test
     public void error_test() {
-        //Mockito.when(webClient.get()).thenThrow(new RuntimeException("api error"));
         mockWebServer.enqueue(new MockResponse().setResponseCode(401));
         Mono<ExAPIResponse> mono = exAPI.getExWeather();
         StepVerifier.create(mono)
-                .expectErrorSatisfies(t -> assertTrue(( t instanceof APIException)))
+                .expectErrorSatisfies(t -> assertTrue(t instanceof APIException))
                 .verify();
-        //APIException e = assertThrows(APIException.class, () -> exAPI.getExWeather());
-        //assertEquals(Errors.INTERNAL_SERVER_ERROR, e.getError());
     }
 
 }
