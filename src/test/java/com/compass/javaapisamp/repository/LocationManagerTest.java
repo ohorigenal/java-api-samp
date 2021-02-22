@@ -28,7 +28,7 @@ public class LocationManagerTest {
     @Sql(value = "classpath:/sql/location/insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findById(int id, String city) {
         Optional<Location> actual = locationManager.findById(id);
-        assertEquals(new Location(id, city), actual.orElseThrow());
+        assertEquals(new Location(id, city), actual.get());
     }
 
     @Test
