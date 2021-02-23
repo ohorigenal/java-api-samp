@@ -26,6 +26,23 @@ public class WeatherService {
 
     private final WeatherManager weatherManager;
 
+    public void register(RegisterRequest payload) {
+        log.info("register service.");
+
+        try {
+            Weather entity = new Weather(
+                    payload.getDate(),
+                    payload.getWeather(),
+                    new Location(payload.getLocationId(), null),
+                    payload.getLocationId(),
+                    payload.getComment()
+            );
+            weatherManager.save(entity);
+        }catch (Exception e) {
+            log.error("register service error.");
+            throw new APIException(Errors.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public Weather getWeather(String date, int location_id) {
         log.info("getWeather service.");

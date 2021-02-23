@@ -2,6 +2,7 @@ package com.compass.javaapisamp.service;
 
 import com.compass.javaapisamp.infrastructure.ExAPI;
 import com.compass.javaapisamp.model.dto.ExAPIResponse;
+import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.entity.Weather;
 import com.compass.javaapisamp.model.exception.APIException;
 import com.compass.javaapisamp.model.exception.Errors;
@@ -31,6 +32,19 @@ public class WeatherServiceTest {
 
     @Autowired
     private WeatherService weatherService;
+
+    @Test
+    void register_Success() {
+        Mockito.when(mockWeatherManager.save(any())).thenReturn(any());
+        assertDoesNotThrow(() -> weatherService.register(new RegisterRequest(1,"20200101",1, "")));
+    }
+
+    @Test
+    void register_Error() {
+        Mockito.when(mockWeatherManager.save(any())).thenThrow(RuntimeException.class);
+        APIException e = assertThrows(APIException.class, () -> weatherService.register(new RegisterRequest(1,"20200101",1, "")));
+        assertEquals(Errors.INTERNAL_SERVER_ERROR, e.getError());
+    }
 
     @Test
     void getWeather_Success() {
