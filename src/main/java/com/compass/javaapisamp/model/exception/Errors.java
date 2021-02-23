@@ -10,6 +10,7 @@ public enum Errors {
 
     INVALID_REQUEST("invalid request. ", HttpStatus.BAD_REQUEST),
     INVALID_REQUEST_PARAM("invalid request param. ", HttpStatus.BAD_REQUEST),
+    WEATHER_NOT_FOUND("weather not found. ", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED("unauthorized error. ", HttpStatus.UNAUTHORIZED),
     INTERNAL_SERVER_ERROR("internal server error. ", HttpStatus.INTERNAL_SERVER_ERROR);
 
