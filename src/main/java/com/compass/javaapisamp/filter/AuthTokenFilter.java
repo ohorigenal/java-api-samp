@@ -25,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(AUTH_TOKEN_HEADER);
-        if(StringUtils.isEmpty(token) || FIXED_TOKEN.equals(token)) {
+        if(StringUtils.isEmpty(token) || !FIXED_TOKEN.equals(token)) {
             response.getWriter().write(mapper.writeValueAsString(
                     new ErrorResponse(Errors.UNAUTHORIZED.getMessage()))
             );
