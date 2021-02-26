@@ -1,12 +1,20 @@
 package com.compass.javaapisamp.controller;
 
+import com.compass.javaapisamp.controller.validator.DateString;
+import com.compass.javaapisamp.model.WeatherEnum;
 import com.compass.javaapisamp.model.dto.ExAPIResponse;
 import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.dto.RegisterResponse;
 import com.compass.javaapisamp.model.dto.WeatherResponse;
+import com.compass.javaapisamp.model.entity.Weather;
+import com.compass.javaapisamp.model.exception.APIException;
+import com.compass.javaapisamp.model.exception.Errors;
 import com.compass.javaapisamp.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,31 +22,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import javax.validation.constraints.Min;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class WeatherController {
 
     private final WeatherService weatherService;
 
     @PostMapping("/register")
     public RegisterResponse register(
-            @RequestBody RegisterRequest request
+            @Validated @RequestBody RegisterRequest request,
+            BindingResult result
     ) {
+        if(result.hasErrors()) {
+            log.info(result.getAllErrors().toString());
+            throw new APIException(Errors.INVALID_REQUEST);
+        }
+
+        log.info("register endpoint.");
+
+        weatherService.register(request);
+
         return new RegisterResponse();
     }
 
-    @PostMapping("/get/{locationId}/{date}")
+    @GetMapping("/get/{locationId}/{date}")
     public WeatherResponse getWeather(
-            @PathVariable(name = "locationId") int locationId,
-            @PathVariable(name = "date") String date
+            @PathVariable(name = "locationId") @Min(1) int locationId,
+            @PathVariable(name = "date") @Length(min = 8, max = 8) @DateString String date
     ) {
-        return null;
+        log.info("get weather endpoint.");
+
+        Weather w = weatherService.getWeather(date, locationId);
+
+        return new WeatherResponse(
+                w.getLocation().getCity(),
+                w.getDate(),
+                WeatherEnum.getWeatherString(w.getWeather()),
+                w.getComment()
+        );
     }
 
     @GetMapping("/get/apidata")
     public Mono<ExAPIResponse> getExAPIData() {
-        log.info("apidata endpoint.");
+
+        log.info("api data endpoint.");
+
         return weatherService.getExWeather();
     }
+
 }

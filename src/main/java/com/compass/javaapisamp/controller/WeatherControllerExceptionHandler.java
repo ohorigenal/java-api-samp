@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @Slf4j
 @RestControllerAdvice
 public class WeatherControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -21,6 +23,16 @@ public class WeatherControllerExceptionHandler extends ResponseEntityExceptionHa
         return new ResponseEntity<>(
                 new ErrorResponse(Errors.INTERNAL_SERVER_ERROR.getMessage()),
                 HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(ConstraintViolationException e) {
+        log.info(e.getMessage());
+
+        return new ResponseEntity<>(
+                new ErrorResponse(Errors.INVALID_REQUEST.getMessage()),
+                HttpStatus.BAD_REQUEST
         );
     }
 
