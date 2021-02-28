@@ -53,7 +53,7 @@ public class WeatherControllerTest {
     @BeforeEach
     void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(weatherController)
-                .addFilters(new AuthTokenFilter(), new RequestIdFilter())
+                .addFilters(new RequestIdFilter(), new AuthTokenFilter())
                 .setControllerAdvice(new WeatherControllerExceptionHandler()).build();
     }
 
@@ -107,6 +107,19 @@ public class WeatherControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().json(resJson))
                 .andExpect(header().exists("X-Request-ID"));
+    }
+
+    @Test
+    void register_filter_test() throws Exception {
+        String reqJson = "{\"location_id\":1,\"date\":\"20200101\",\"weather\":1,\"comment\":\"test comment\"}";
+        String resJson = "{\"message\":\"unauthorized error. \"}";
+        mockMvc.perform(post("/register")
+                .header("X-Request-ID", "AAA")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(reqJson))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().json(resJson))
+                .andExpect(header().string("X-Request-ID", "AAA"));
     }
 
     @Test
@@ -175,6 +188,18 @@ public class WeatherControllerTest {
     }
 
     @Test
+    void getWeather_filter_test() throws Exception {
+        int location_id = 1;
+        String date = "20200101";
+        String resJson = "{\"message\":\"unauthorized error. \"}";
+        mockMvc.perform(get("/get/"+location_id+"/"+date)
+                .header("X-Request-ID", "AAA"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().json(resJson))
+                .andExpect(header().string("X-Request-ID", "AAA"));
+    }
+
+    @Test
     void getExAPIData_Success() throws Exception {
         ExAPIResponse res = new ExAPIResponse(
                 new ArrayList<ExAPIResponse.MetaWeather>(){{
@@ -217,5 +242,15 @@ public class WeatherControllerTest {
         mockMvc.perform(asyncDispatch(mvcResult))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().json(resJson));
+    }
+
+    @Test
+    void getExAPIData_filter_test() throws Exception {
+        String resJson = "{\"message\":\"unauthorized error. \"}";
+        mockMvc.perform(get("/get/apidata")
+                .header("X-Request-ID", "AAA"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().json(resJson))
+                .andExpect(header().string("X-Request-ID", "AAA"));
     }
 }
