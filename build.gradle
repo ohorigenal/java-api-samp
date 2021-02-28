@@ -40,3 +40,9 @@ test {
 	useJUnitPlatform()
 	exclude("/com/compass/javaapisamp/integration/**")
 }
+
+task localIntegration (type: Test) {
+	useJUnitPlatform()
+	systemProperty("integration.url", "http://localhost:8080")
+	include("/com/compass/javaapisamp/integration/**")
+}
