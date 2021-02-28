@@ -42,7 +42,7 @@ public class WeatherController {
             throw new APIException(Errors.INVALID_REQUEST);
         }
 
-        log.info("register endpoint.");
+        log.info("register endpoint. " + request);
 
         weatherService.register(request);
 
@@ -54,7 +54,7 @@ public class WeatherController {
             @PathVariable(name = "locationId") @Min(1) int locationId,
             @PathVariable(name = "date") @Length(min = 8, max = 8) @DateString String date
     ) {
-        log.info("get weather endpoint.");
+        log.info("get weather endpoint. location_id: " + locationId + ", date:" + date);
 
         Weather w = weatherService.getWeather(date, locationId);
 

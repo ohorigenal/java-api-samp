@@ -39,7 +39,7 @@
         </root>
     </springProfile>
     <springProfile name="!test &amp; !dev &amp; !prod">
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="STDOUT" />
             <appender-ref ref="STDERR" />
         </root>

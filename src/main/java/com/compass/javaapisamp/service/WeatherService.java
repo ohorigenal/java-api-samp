@@ -52,7 +52,7 @@ public class WeatherService {
             return weatherOptional.get();
         }catch (NoSuchElementException e) {
             log.info("weather not found. " + e.getMessage());
-            throw new APIException(Errors.WEATHER_NOT_FOUND.append(e.getMessage()));
+            throw new APIException(Errors.WEATHER_NOT_FOUND);
         }catch (Exception e) {
             log.error("weather service error. " + e.getMessage());
             throw new APIException(Errors.INTERNAL_SERVER_ERROR);
