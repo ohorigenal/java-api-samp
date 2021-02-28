@@ -116,8 +116,8 @@ https://docs.docker.com/get-docker/
 
 ```
 # buildと実行
-$ docker build --no-cache -t java-api-samp/java:v1.0
-$ docker run -p 8080:8080 java-api-samp/java:v1.0
+$ docker build --no-cache -t java-api-samp/api:v1.0 .
+$ docker run -p 8080:8080 java-api-samp/api:v1.0
 
 ※不要なイメージは削除も必要になると思います
 $ docker rmi <image ID> (<image ID> ...) 
@@ -163,14 +163,14 @@ $ eval $(minikube docker-env)
 $ docker info --format '{{json .Name}}'
 
 # タグをつけてビルド
-$ docker build  --no-cache -t go-api-samp/golang:v1.0 . 
-$ docker images go-api-samp/golang:v1.0
+$ docker build --no-cache -t java-api-samp/java:v1.0 . 
+$ docker images java-api-samp/java:v1.0
 
 # minikubeへのデプロイ
 $ kubectl apply -k ./.k8s/overlay/minikube/
 
 # ingressのADDRESS,HOSTを確認(host設定のため)
-$ kubectl get ingress go-api-ingress
+$ kubectl get ingress java-api-ingress
 
 # ホストファイル/etc/hostsを編集 ※windowsではC:¥Windows¥System32¥drivers¥etc¥hosts
 # macなどでvimで編集するなら

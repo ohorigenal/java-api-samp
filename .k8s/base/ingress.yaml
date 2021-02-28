@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: java-api-ingress
+  labels:
+    app: java-api-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - secretName: tls-secret
+  rules:
+    - host: "((patch))" # patchでのreplace
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: java-api-service
+              servicePort: 80
