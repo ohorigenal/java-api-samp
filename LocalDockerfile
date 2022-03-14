@@ -1,0 +1,7 @@
+FROM adoptopenjdk/openjdk11:alpine-slim
+
+WORKDIR /project
+
+COPY ./build/libs/java-api-samp.jar .
+
+ENTRYPOINT ["java", "-jar", "java-api-samp.jar"]

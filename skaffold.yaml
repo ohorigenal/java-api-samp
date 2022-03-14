@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta7
+kind: Config
+build:
+  artifacts:
+    - image: java-api
+      docker:
+        dockerfile: LocalDockerfile
+      sync:
+        manual:
+          - src: 'java-api-samp.jar'
+            dest: /build/libs
+  local: {}
+deploy:
+  kustomize:
+    paths:
+      - ./.k8s/local
+portForward:
+  - resourceType: deployment
+    resourceName: java-api-deployment
+    namespace: default
+    port: 8080

@@ -104,6 +104,24 @@ https://www.metaweather.com/api/location/1118370/
 |---|---|---|
 |message|string|"error message"|
 
+## 実行(skaffold)
+```
+# 事前準備
+# dockerのinstall
+https://docs.docker.com/get-docker/
+
+# 設定 -> Enable Kubernetes
+```
+
+```
+# https://skaffold.dev/docs/
+# 実行
+$ skaffold run --port-forward
+```
+
+
+
+<details><summary>docker,minikube実行</summary>
 ## 実行(docker)
 
 ```
@@ -180,11 +198,12 @@ $ sudo vim /etc/hosts
 
 --完了--
 ```
+</details>
 
 **アクセス例**
 ```
 # URL
-# docker:http://localhost:8080
+# skaffold, docker: http://localhost:8080
 # minikube: https://compass-j.com
 
 # /register
