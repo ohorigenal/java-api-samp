@@ -1,3 +1,4 @@
+# prod環境の設定
 spring:
   jpa:
     hibernate:
