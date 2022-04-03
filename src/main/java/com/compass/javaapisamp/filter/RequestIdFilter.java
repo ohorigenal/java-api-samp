@@ -17,8 +17,8 @@ import java.util.UUID;
 @Order(0)
 public class RequestIdFilter extends OncePerRequestFilter {
 
-    private static final String ID_KEY = "ID";
-    private static final String X_HEADER = "X-Request-ID";
+    private final String ID_KEY = "ID";
+    private final String X_HEADER = "X-Request-ID";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -27,10 +27,13 @@ public class RequestIdFilter extends OncePerRequestFilter {
             requestId = UUID.randomUUID().toString();
         }
         try {
+            // MDCはスレッド単位で保持されるので、リクエストスコープと同様
+            // X{ID}で埋め込める(logback-spring.xml)
             MDC.put(ID_KEY, requestId);
             response.addHeader(X_HEADER, requestId);
             filterChain.doFilter(request, response);
         }finally {
+            // remove(or clear)しないとメモリリークになるかもしれない
             MDC.remove(ID_KEY);
         }
     }
