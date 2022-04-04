@@ -1,4 +1,4 @@
-package com.compass.javaapisamp;
+package com.compass.javaapisamp.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
