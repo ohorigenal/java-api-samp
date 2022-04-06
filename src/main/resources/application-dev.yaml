@@ -19,3 +19,7 @@ spring:
 exapi:
   url: https://www.metaweather.com/api/location/1118370/
   timeout: 5000
+api:
+  restTemplate:
+    readTimeout: 5
+    connectTimeout: 5

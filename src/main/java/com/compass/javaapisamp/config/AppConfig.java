@@ -21,24 +21,30 @@ public class AppConfig {
     @Value("${exapi.timeout}")
     private int timeout;
 
+    @Value("${api.restTemplate.readTimeout}")
+    private int readTimeout;
+
+    @Value("${api.restTemplate.connectTimeout}")
+    private int connectTimeout;
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
-                .setConnectTimeout(Duration.ofSeconds(5))
-                .setReadTimeout(Duration.ofSeconds(5))
-                .build();
+            .setConnectTimeout(Duration.ofSeconds(connectTimeout))
+            .setReadTimeout(Duration.ofSeconds(readTimeout))
+            .build();
     }
 
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
         HttpClient client = HttpClient.create().option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout)
-                .responseTimeout(Duration.ofMillis(timeout))
-                .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(timeout, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(timeout, TimeUnit.MILLISECONDS)));
+            .responseTimeout(Duration.ofMillis(timeout))
+            .doOnConnected(conn ->
+                conn.addHandlerLast(new ReadTimeoutHandler(timeout, TimeUnit.MILLISECONDS))
+                    .addHandlerLast(new WriteTimeoutHandler(timeout, TimeUnit.MILLISECONDS)));
 
         return builder
-                .clientConnector(new ReactorClientHttpConnector(client))
-                .build();
+            .clientConnector(new ReactorClientHttpConnector(client))
+            .build();
     }
 }
