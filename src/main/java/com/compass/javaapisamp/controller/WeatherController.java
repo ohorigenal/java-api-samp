@@ -12,7 +12,6 @@ import com.compass.javaapisamp.model.exception.Errors;
 import com.compass.javaapisamp.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import javax.validation.constraints.Min;
 
 @Slf4j
 @RestController
@@ -51,18 +48,18 @@ public class WeatherController {
 
     @GetMapping("/get/{locationId}/{date}")
     public WeatherResponse getWeather(
-            @PathVariable(name = "locationId") @Min(1) int locationId,
-            @PathVariable(name = "date") @Length(min = 8, max = 8) @DateString String date
+            @PathVariable(name = "locationId") int locationId,
+            @PathVariable(name = "date") @DateString String date
     ) {
         log.info("get weather endpoint. location_id: " + locationId + ", date:" + date);
 
         Weather w = weatherService.getWeather(date, locationId);
 
         return new WeatherResponse(
-                w.getLocation().getCity(),
-                w.getDate(),
-                WeatherEnum.getWeatherString(w.getWeather()),
-                w.getComment()
+            w.getLocation().getCity(),
+            w.getDate(),
+            WeatherEnum.getWeatherString(w.getWeather()),
+            w.getComment()
         );
     }
 
