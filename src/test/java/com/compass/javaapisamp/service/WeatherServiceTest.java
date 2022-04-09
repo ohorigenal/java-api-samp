@@ -1,7 +1,5 @@
 package com.compass.javaapisamp.service;
 
-import com.compass.javaapisamp.infrastructure.ExAPI;
-import com.compass.javaapisamp.model.dto.ExAPIResponse;
 import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.entity.Weather;
 import com.compass.javaapisamp.model.exception.APIException;
@@ -12,7 +10,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -23,9 +20,6 @@ import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 public class WeatherServiceTest {
-
-    @MockBean
-    private ExAPI mockExAPI;
 
     @MockBean
     private WeatherManager mockWeatherManager;
@@ -65,17 +59,5 @@ public class WeatherServiceTest {
         Mockito.when(mockWeatherManager.findById(any())).thenThrow(RuntimeException.class);
         APIException e = assertThrows(APIException.class, () -> weatherService.getWeather("20200101", 1));
         assertEquals(Errors.INTERNAL_SERVER_ERROR, e.getError());
-    }
-
-    @Test
-    void getExWeather_Success() {
-        Mockito.when(mockExAPI.getExWeather()).thenReturn(Mono.just(new ExAPIResponse()));
-        assertDoesNotThrow(() -> weatherService.getExWeather());
-    }
-
-    @Test
-    void getExWeather_Error() {
-        Mockito.when(mockExAPI.getExWeather()).thenThrow(new APIException(Errors.INTERNAL_SERVER_ERROR));
-        assertThrows(APIException.class, () -> weatherService.getExWeather());
     }
 }

@@ -2,7 +2,6 @@ package com.compass.javaapisamp.controller;
 
 import com.compass.javaapisamp.controller.validator.DateString;
 import com.compass.javaapisamp.model.WeatherEnum;
-import com.compass.javaapisamp.model.dto.ExAPIResponse;
 import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.dto.RegisterResponse;
 import com.compass.javaapisamp.model.dto.WeatherResponse;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
@@ -62,13 +60,4 @@ public class WeatherController {
             w.getComment()
         );
     }
-
-    @GetMapping("/get/apidata")
-    public Mono<ExAPIResponse> getExAPIData() {
-
-        log.info("api data endpoint.");
-
-        return weatherService.getExWeather();
-    }
-
 }

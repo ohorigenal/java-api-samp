@@ -1,36 +1,26 @@
 package com.compass.javaapisamp.controller;
 
-import com.compass.javaapisamp.filter.AuthTokenFilter;
-import com.compass.javaapisamp.filter.RequestIdFilter;
 import com.compass.javaapisamp.helper.TestHelper;
-import com.compass.javaapisamp.model.dto.ExAPIResponse;
-import com.compass.javaapisamp.model.dto.WeatherResponse;
 import com.compass.javaapisamp.model.entity.Location;
 import com.compass.javaapisamp.model.entity.Weather;
 import com.compass.javaapisamp.model.exception.APIException;
 import com.compass.javaapisamp.model.exception.Errors;
 import com.compass.javaapisamp.service.WeatherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -38,25 +28,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class WeatherControllerTest {
 
     @MockBean
     private WeatherService weatherService;
 
     @Autowired
-    private WeatherController weatherController;
-
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper mapper;
-
-    @BeforeEach
-    void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(weatherController)
-            .addFilters(new RequestIdFilter(), new AuthTokenFilter())
-            .setControllerAdvice(new WeatherControllerExceptionHandler()).build();
-    }
 
     @Test
     void register_Success() throws Exception {
@@ -198,69 +180,6 @@ public class WeatherControllerTest {
     void getWeatherFilterTest() throws Exception {
         String resJson = TestHelper.readClassPathResource("common/unauthorized_error_response.json");
         mockMvc.perform(get("/get/1/20200101")
-                .header("X-Request-ID", "AAA"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().json(resJson))
-                .andExpect(header().string("X-Request-ID", "AAA"));
-    }
-
-    /*
-     * EXAPI
-     */
-    @Test
-    void getExAPIDataSuccessTest() throws Exception {
-        String resJson = TestHelper.readClassPathResource("exapi/success_response.json");
-
-        ExAPIResponse res = new ExAPIResponse(
-                List.of(
-                    new ExAPIResponse.MetaWeather(
-                    "Sunny",
-                    "2020-01-01",
-                    12.0D,
-                    776.0D,
-                    75)
-                ),
-                "Tokyo",
-                "Asia/Tokyo"
-        );
-
-        Mockito.when(weatherService.getExWeather()).thenReturn(Mono.just(res));
-
-        MvcResult mvcResult = mockMvc.perform(
-            get("/get/apidata")
-                .header("Auth-Token", "auth-token"))
-            .andReturn();
-
-        mockMvc.perform(asyncDispatch(mvcResult))
-            .andExpect(header().exists("X-Request-ID"))
-            .andExpect(status().isOk())
-            .andExpect(content().json(resJson));
-    }
-
-    @Test
-    void getExAPIDataErrorTest() throws Exception {
-        String resJson = TestHelper.readClassPathResource("common/server_error_response.json");
-
-        Mockito.when(weatherService.getExWeather())
-            .thenReturn(Mono.error(new APIException(Errors.INTERNAL_SERVER_ERROR)));
-
-        MvcResult mvcResult = mockMvc.perform(
-            get("/get/apidata")
-                .header("Auth-Token", "auth-token"))
-                .andExpect(header().exists("X-Request-ID"))
-            .andReturn();
-
-        mockMvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().json(resJson));
-    }
-
-    @Test
-    void getExAPIDataFilterTest() throws Exception {
-        String resJson = TestHelper.readClassPathResource("common/unauthorized_error_response.json");
-
-        mockMvc.perform(get("/get/apidata")
-                .header("Auth-Token", "invalid-auth-token")
                 .header("X-Request-ID", "AAA"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().json(resJson))

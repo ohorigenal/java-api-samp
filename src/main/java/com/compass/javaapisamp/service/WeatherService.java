@@ -1,7 +1,5 @@
 package com.compass.javaapisamp.service;
 
-import com.compass.javaapisamp.infrastructure.ExAPI;
-import com.compass.javaapisamp.model.dto.ExAPIResponse;
 import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.entity.Location;
 import com.compass.javaapisamp.model.entity.Weather;
@@ -12,7 +10,6 @@ import com.compass.javaapisamp.repository.WeatherManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -21,8 +18,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class WeatherService {
-
-    private final ExAPI exAPI;
 
     private final WeatherManager weatherManager;
 
@@ -57,10 +52,5 @@ public class WeatherService {
             log.error("weather service error. " + e.getMessage());
             throw new APIException(Errors.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    public Mono<ExAPIResponse> getExWeather() {
-        log.info("getExWeather service.");
-        return exAPI.getExWeather();
     }
 }
