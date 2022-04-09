@@ -16,9 +16,4 @@ public enum Errors {
 
     private String message;
     private final HttpStatus status;
-
-    public Errors append(String message) {
-        this.message += message;
-        return this;
-    }
 }

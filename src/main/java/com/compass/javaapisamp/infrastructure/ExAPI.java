@@ -25,15 +25,14 @@ public class ExAPI {
         log.info("getExWeather infrastructure.");
 
         return webClient
-                .get()
-                .uri(url)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(ExAPIResponse.class)
-                .doOnError(WebClientResponseException.class,
-                        e -> {
-                            log.error(e.getMessage());
-                            throw new APIException(Errors.INTERNAL_SERVER_ERROR.append(e.getMessage()));
-                        });
+            .get()
+            .uri(url)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .bodyToMono(ExAPIResponse.class)
+            .doOnError(WebClientResponseException.class, e -> {
+                log.error(e.getMessage());
+                throw new APIException(Errors.INTERNAL_SERVER_ERROR);
+            });
     }
 }
