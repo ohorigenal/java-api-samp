@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.6'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 archivesBaseName = "java-api-samp"
@@ -39,10 +40,15 @@ dependencies {
 test {
 	useJUnitPlatform()
 	exclude("/com/compass/javaapisamp/integration/**")
+	finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
 task localIntegration (type: Test) {
 	useJUnitPlatform()
 	systemProperty("integration.url", "http://localhost:8080")
 	include("/com/compass/javaapisamp/integration/**")
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
 }
