@@ -16,16 +16,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface DateString {
 
-    String message() default "実在しない日付文字列です";
+    String message() default "日付フォーマットが間違っています(例:20220101)";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
-    @Target({FIELD, PARAMETER})
-    @Retention(RUNTIME)
-    @Documented
-    @interface List {
-        DateString[] value();
-    }
 }

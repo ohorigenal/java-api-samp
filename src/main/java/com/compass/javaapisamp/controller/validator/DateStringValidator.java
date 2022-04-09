@@ -7,15 +7,12 @@ import java.time.format.DateTimeFormatter;
 
 public class DateStringValidator implements ConstraintValidator<DateString, String> {
 
-    @Override
-    public void initialize(DateString constraintAnnotation) {
-
-    }
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         try {
-            LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            LocalDate.parse(value, formatter);
         }catch (Exception e) {
             return false;
         }
