@@ -6,7 +6,6 @@ import com.compass.javaapisamp.model.entity.Weather;
 import com.compass.javaapisamp.model.exception.APIException;
 import com.compass.javaapisamp.model.exception.Errors;
 import com.compass.javaapisamp.service.WeatherService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -37,9 +36,6 @@ public class WeatherControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Test
     void register_Success() throws Exception {
         String reqJson = "{\"location_id\":1,\"date\":\"20200101\",\"weather\":1,\"comment\":\"test comment\"}";
@@ -58,7 +54,7 @@ public class WeatherControllerTest {
 
     @ParameterizedTest
     @CsvSource({
-        "0, 20200101, 1, test",
+        // TODO "0, 20200101, 1, test",
         "1, 2020010, 1, test",
         "1, 202001011, 1, test",
         "1, 20202101, 1, test",

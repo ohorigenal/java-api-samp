@@ -1,15 +1,13 @@
 package com.compass.javaapisamp.model.dto;
 
 import com.compass.javaapisamp.controller.validator.DateString;
+import com.compass.javaapisamp.controller.validator.LocationNumber;
+import com.compass.javaapisamp.controller.validator.WeatherNumber;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 @ToString
 @Getter
@@ -17,15 +15,15 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class RegisterRequest {
     @JsonProperty("location_id")
-    @Min(1)
+    @LocationNumber
     private int locationId;
 
     @JsonProperty("date")
-    @Length(min = 8, max = 8) @DateString
+    @DateString
     private String date;
 
     @JsonProperty("weather")
-    @Min(1) @Max(4)
+    @WeatherNumber
     private int weather;
 
     @JsonProperty("comment")

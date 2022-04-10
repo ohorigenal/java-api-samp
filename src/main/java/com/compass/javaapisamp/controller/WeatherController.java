@@ -29,8 +29,8 @@ public class WeatherController {
 
     @PostMapping("/register")
     public RegisterResponse register(
-            @Validated @RequestBody RegisterRequest request,
-            BindingResult result
+        @Validated @RequestBody RegisterRequest request,
+        BindingResult result
     ) {
         if(result.hasErrors()) {
             log.info(result.getAllErrors().toString());
@@ -46,8 +46,8 @@ public class WeatherController {
 
     @GetMapping("/get/{locationId}/{date}")
     public WeatherResponse getWeather(
-            @PathVariable(name = "locationId") int locationId,
-            @PathVariable(name = "date") @DateString String date
+        @PathVariable(name = "locationId") int locationId,
+        @PathVariable(name = "date") @DateString String date
     ) {
         log.info("get weather endpoint. location_id: " + locationId + ", date:" + date);
 
