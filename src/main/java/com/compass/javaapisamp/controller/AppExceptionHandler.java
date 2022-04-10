@@ -26,24 +26,24 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> exceptionHandler(ConstraintViolationException e) {
-        log.info(e.getMessage());
-
-        return new ResponseEntity<>(
-                new ErrorResponse(Errors.INVALID_REQUEST.getMessage()),
-                HttpStatus.BAD_REQUEST
-        );
-    }
-
     @ExceptionHandler(APIException.class)
     public ResponseEntity<ErrorResponse> exceptionHandler(APIException e) {
         if(e.getError().getStatus().is4xxClientError()) {
             log.debug(e.getMessage());
         }
         return new ResponseEntity<>(
-                new ErrorResponse(e.getError().getMessage()),
-                e.getError().getStatus()
+            new ErrorResponse(e.getError().getMessage()),
+            e.getError().getStatus()
+        );
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> constraintViolationExceptionHandler(ConstraintViolationException e) {
+        log.info(e.getMessage());
+
+        return new ResponseEntity<>(
+            new ErrorResponse(Errors.INVALID_REQUEST.getMessage()),
+            HttpStatus.BAD_REQUEST
         );
     }
 
