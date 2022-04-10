@@ -1,7 +1,7 @@
 package com.compass.javaapisamp.controller;
 
 import com.compass.javaapisamp.controller.validator.DateString;
-import com.compass.javaapisamp.model.WeatherEnum;
+import com.compass.javaapisamp.model.WeatherCode;
 import com.compass.javaapisamp.model.dto.RegisterRequest;
 import com.compass.javaapisamp.model.dto.RegisterResponse;
 import com.compass.javaapisamp.model.dto.WeatherResponse;
@@ -56,7 +56,7 @@ public class WeatherController {
         return new WeatherResponse(
             w.getLocation().getCity(),
             w.getDate(),
-            WeatherEnum.getWeatherString(w.getWeather()),
+            WeatherCode.getWeatherString(w.getWeather()),
             w.getComment()
         );
     }
