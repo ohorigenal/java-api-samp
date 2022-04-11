@@ -23,3 +23,6 @@ api:
   restTemplate:
     readTimeout: 5
     connectTimeout: 5
+springdoc:
+  api-docs:
+    enabled: false
