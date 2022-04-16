@@ -18,20 +18,20 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class AppConfig {
 
-    @Value("${exapi.timeout}")
+    @Value("${exapi.timeout:5000}")
     private int timeout;
 
-    @Value("${api.restTemplate.readTimeout}")
+    @Value("${api.restTemplate.readTimeout:5000}")
     private int readTimeout;
 
-    @Value("${api.restTemplate.connectTimeout}")
+    @Value("${api.restTemplate.connectTimeout:5000}")
     private int connectTimeout;
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
-            .setConnectTimeout(Duration.ofSeconds(connectTimeout))
-            .setReadTimeout(Duration.ofSeconds(readTimeout))
+            .setConnectTimeout(Duration.ofMillis(connectTimeout))
+            .setReadTimeout(Duration.ofMillis(readTimeout))
             .build();
     }
 

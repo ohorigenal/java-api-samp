@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class ExAPI {
     private final WebClient webClient;
 
-    @Value("${exapi.url}")
+    @Value("${exapi.url:https://www.metaweather.com/api/location/1118370/}")
     private String url;
 
     public Mono<ExAPIResponse> getExWeather() {

@@ -21,8 +21,8 @@ exapi:
   timeout: 5000
 api:
   restTemplate:
-    readTimeout: 5
-    connectTimeout: 5
+    readTimeout: 5000
+    connectTimeout: 5000
   retry:
     maxAttempts: 2
     backoffDelay: 500

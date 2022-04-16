@@ -25,8 +25,8 @@ public class WeatherRepository {
 
     @Retryable(
         value = RetryableException.class,
-        maxAttemptsExpression = "${api.retry.maxAttempts}",
-        backoff = @Backoff(delayExpression = "${api.retry.backoffDelay}"))
+        maxAttemptsExpression = "${api.retry.maxAttempts:2}",
+        backoff = @Backoff(delayExpression = "${api.retry.backoffDelay:500}"))
     public Weather findById(WeatherID id) {
         try {
             return weatherManager.findById(id).orElseThrow();
@@ -53,8 +53,8 @@ public class WeatherRepository {
 
     @Retryable(
         value = RetryableException.class,
-        maxAttemptsExpression = "${api.retry.maxAttempts}",
-        backoff = @Backoff(delayExpression = "${api.retry.backoffDelay}"))
+        maxAttemptsExpression = "${api.retry.maxAttempts:2}",
+        backoff = @Backoff(delayExpression = "${api.retry.backoffDelay:500}"))
     public void saveWeather(Weather weather) {
         try {
             weatherManager.save(weather);
