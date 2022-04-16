@@ -3,6 +3,10 @@ package com.compass.javaapisamp.repository.manager;
 import com.compass.javaapisamp.model.entity.Location;
 import com.compass.javaapisamp.model.entity.Weather;
 import com.compass.javaapisamp.model.entity.WeatherID;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WeatherManagerTest {
 
     @Autowired
     private WeatherManager weatherManager;
+
+    @Test
+    @Order(0)
+    @Sql(value = "classpath:/sql/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void setup() {}
 
     @ParameterizedTest
     @CsvSource({
