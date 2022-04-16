@@ -5,11 +5,15 @@
 
 フォーマットはJSON
 
+共通ヘッダの"Auth-Token: auth-token"を設定してアクセス  
+(Chrome拡張機能のModHeader使うなどでブラウザアクセスできます)  
+swagger-ui: http://localhost:8080/swagger-ui/index.html
+
 言語：Java
 
 FW：Spring Boot(JPA)
 
-他: Docker,Kubernetes
+他: Docker,Kubernetes,Skaffold
 
 ```
 # 実行(簡略化でインメモリDB使用のため実行コマンドのみで動きます)
@@ -50,6 +54,8 @@ docker、minikube(local kubernetes)を利用しての実行は下記に記載し
 
 **output**
 
+HTTPレスポンス: 201
+
 |key|type|概要|
 |---|---|---|
 |message|string|"weather registered"|
@@ -71,12 +77,30 @@ docker、minikube(local kubernetes)を利用しての実行は下記に記載し
 
 **output**
 
+HTTPレスポンス: 200
+
 |key|type|概要|
 |---|---|---|
 |location|string|"新宿"|
 |date|string|"20200101" 八桁|
 |weather|string|"Sunny Cloudy Rainy Snowy"|
 |comment|string|一言コメント|
+
+
+### /get/locations (GET)
+// TODO
+
+* 存在するlocationのリストを返す
+
+**output**
+
+HTTPレスポンス: 200
+
+| key      |           | type        | 概要    |
+|----------|-----------|-------------|-------|
+| location |           |             |       |
+|          | id: value | int: string | 1: "新宿" |
+
 
 ### /get/apidata (GET)
 
@@ -85,6 +109,8 @@ docker、minikube(local kubernetes)を利用しての実行は下記に記載し
 https://www.metaweather.com/api/location/1118370/
 
 **output**
+
+HTTPレスポンス: 200
 
 |key| |type|概要|
 |---|---|---|---|
@@ -203,14 +229,14 @@ $ sudo vim /etc/hosts
 **アクセス例**
 ```
 # URL
-# skaffold, docker: http://localhost:8080
+# local, skaffold, docker: http://localhost:8080
 # minikube: https://compass-j.com
-
-# /register
-$ curl -D - --insecure -X POST -H 'Content-Type: application/json' -H 'Auth-Token: auth-token' -d '{"location_id":1, "date":"20200101", "weather":1, "comment":"good day"}' http://localhost:8080/register
 
 # /get/:location_id/:date
 $ curl -D - --insecure -X GET -H 'Auth-Token: auth-token' http://localhost:8080/get/1/20200101
+
+# /register
+$ curl -D - --insecure -X POST -H 'Content-Type: application/json' -H 'Auth-Token: auth-token' -d '{"location_id":1, "date":"20200101", "weather":1, "comment":"good day"}' http://localhost:8080/register
 
 # /get/apidata
 $ curl -D - --insecure -X GET -H 'Auth-Token: auth-token' http://localhost:8080/get/apidata
