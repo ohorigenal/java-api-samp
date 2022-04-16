@@ -1,4 +1,4 @@
-package com.compass.javaapisamp.repository;
+package com.compass.javaapisamp.repository.manager;
 
 import com.compass.javaapisamp.model.entity.Location;
 import org.junit.jupiter.api.Test;

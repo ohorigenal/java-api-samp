@@ -4,6 +4,7 @@ import com.compass.javaapisamp.model.entity.Weather;
 import com.compass.javaapisamp.model.entity.WeatherID;
 import com.compass.javaapisamp.model.exception.APIException;
 import com.compass.javaapisamp.model.exception.Errors;
+import com.compass.javaapisamp.repository.manager.WeatherManager;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
