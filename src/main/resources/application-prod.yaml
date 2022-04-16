@@ -23,6 +23,9 @@ api:
   restTemplate:
     readTimeout: 5
     connectTimeout: 5
+  retry:
+    maxAttempts: 2
+    backoffDelay: 500
 springdoc:
   api-docs:
     enabled: false
