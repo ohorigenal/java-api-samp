@@ -2,13 +2,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
-    properties:
-      javax:
-        persistence:
-          validation:
-            mode: none
-    database-platform: org.hibernate.dialect.H2Dialect
+      ddl-auto: none
     open-in-view: false
     show-sql: true
   datasource:
@@ -16,6 +10,12 @@ spring:
     driver-class-name: org.h2.Driver
     username: user
     password: password
+  sql:
+    init:
+      mode: embedded
+      encoding: utf-8
+      schema-locations: classpath:/sql/schema.sql
+      data-locations: classpath:/sql/data.sql
 exapi:
   url: https://www.metaweather.com/api/location/1118370/
   timeout: 5000
@@ -29,3 +29,8 @@ api:
 springdoc:
   api-docs:
     enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
